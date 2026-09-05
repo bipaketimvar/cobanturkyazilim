@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://cobanturkyazilim.com/sitemap.xml
+Sitemap: https://xn--cobanturkyazlm-hgcb.com/sitemap.xml
