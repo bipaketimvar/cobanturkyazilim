@@ -1,12 +1,106 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-<title>Çobantürk Yazılım | QR Menü</title>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<!-- =========================================================
+     GOOGLE / SEO
+     ========================================================= -->
+
+<title>Çobantürk Yazılım | QR Menü ve Dijital Çözümler</title>
+
+<meta name="description"
+      content="Çobantürk Yazılım; QR menü, dijital menü, web sitesi, web yazılım ve işletmelere özel dijital çözümler sunar.">
+
+<meta name="robots"
+      content="index, follow">
+
+<meta name="author"
+      content="Çobantürk Yazılım">
+
+<meta name="theme-color"
+      content="#05040b">
+
+<link rel="canonical"
+      href="https://cobanturkyazilim.com/">
+
+<!-- =========================================================
+     OPEN GRAPH
+     ========================================================= -->
+
+<meta property="og:type"
+      content="website">
+
+<meta property="og:locale"
+      content="tr_TR">
+
+<meta property="og:site_name"
+      content="Çobantürk Yazılım">
+
+<meta property="og:title"
+      content="Çobantürk Yazılım | QR Menü ve Dijital Çözümler">
+
+<meta property="og:description"
+      content="QR menü, dijital menü, web sitesi, web yazılım ve işletmelere özel dijital çözümler.">
+
+<meta property="og:url"
+      content="https://cobanturkyazilim.com/">
+
+<meta property="og:image"
+      content="https://cobanturkyazilim.com/anasayfa.png">
+
+<meta property="og:image:alt"
+      content="Çobantürk Yazılım">
+
+<!-- =========================================================
+     TWITTER / X
+     ========================================================= -->
+
+<meta name="twitter:card"
+      content="summary_large_image">
+
+<meta name="twitter:title"
+      content="Çobantürk Yazılım | QR Menü ve Dijital Çözümler">
+
+<meta name="twitter:description"
+      content="QR menü, dijital menü, web sitesi, web yazılım ve işletmelere özel dijital çözümler.">
+
+<meta name="twitter:image"
+      content="https://cobanturkyazilim.com/anasayfa.png">
+
+<!-- =========================================================
+     FAVICON
+     ========================================================= -->
+
+<link rel="icon"
+      href="/favicon.ico">
+
+<!-- =========================================================
+     YAPILANDIRILMIŞ VERİ
+     ========================================================= -->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Çobantürk Yazılım",
+  "url": "https://cobanturkyazilim.com/",
+  "logo": "https://cobanturkyazilim.com/anasayfa.png",
+  "description": "QR menü, dijital menü, web sitesi, web yazılım ve işletmelere özel dijital çözümler.",
+  "telephone": "+905300744561"
+}
+</script>
+
+<!-- =========================================================
+     CSS
+     ========================================================= -->
 
 <style>
+
 *{
     box-sizing:border-box;
 }
@@ -22,6 +116,8 @@ body{
 
 body{
     overflow-x:hidden;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
 .site{
@@ -29,7 +125,6 @@ body{
     width:100%;
     margin:0;
     padding:0;
-    line-height:0;
 }
 
 .ana-gorsel{
@@ -42,9 +137,94 @@ body{
 }
 
 
-/* =========================================
+/* =========================================================
+   SEO / ŞİRKET BİLGİ ALANI
+   ========================================================= */
+
+.seo-alan{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto;
+    padding:45px 22px 90px;
+
+    background:#05040b;
+
+    text-align:center;
+
+    line-height:1.7;
+}
+
+.seo-alan h1{
+    margin:0 0 12px;
+
+    font-size:clamp(28px,5vw,44px);
+    line-height:1.2;
+
+    font-weight:800;
+}
+
+.seo-alan h2{
+    margin:0 0 18px;
+
+    font-size:clamp(20px,3.5vw,30px);
+    line-height:1.3;
+
+    font-weight:700;
+}
+
+.seo-alan p{
+    max-width:850px;
+
+    margin:0 auto 16px;
+
+    font-size:clamp(15px,2vw,18px);
+
+    line-height:1.8;
+
+    opacity:.82;
+}
+
+.seo-kartlar{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:18px;
+
+    margin-top:35px;
+}
+
+.seo-kart{
+    padding:25px 20px;
+
+    border:1px solid rgba(255,255,255,.10);
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.035);
+}
+
+.seo-kart h3{
+    margin:0 0 10px;
+
+    font-size:19px;
+
+    line-height:1.3;
+}
+
+.seo-kart p{
+    margin:0;
+
+    font-size:14px;
+
+    line-height:1.7;
+}
+
+
+/* =========================================================
    TÜM GİZLİ TIKLAMA ALANLARI
-   ========================================= */
+   ========================================================= */
 
 .tiklama{
     position:absolute;
@@ -67,9 +247,9 @@ body{
 }
 
 
-/* =========================================
+/* =========================================================
    1 - İLETİŞİME GEÇ
-   ========================================= */
+   ========================================================= */
 
 .iletisime-gec{
     left:2%;
@@ -80,10 +260,9 @@ body{
 }
 
 
-/* =========================================
+/* =========================================================
    2 - TEKNİK DESTEK
-   ÜSTTEKİ "Teknik Destek"
-   ========================================= */
+   ========================================================= */
 
 .teknik-destek-1{
     left:72%;
@@ -94,10 +273,9 @@ body{
 }
 
 
-/* =========================================
+/* =========================================================
    3 - TEKNİK DESTEK
-   ALTTaki "TEKNİK DESTEK"
-   ========================================= */
+   ========================================================= */
 
 .teknik-destek-2{
     left:58%;
@@ -108,9 +286,9 @@ body{
 }
 
 
-/* =========================================
+/* =========================================================
    4 - HEMEN İLETİŞİME GEÇ
-   ========================================= */
+   ========================================================= */
 
 .hemen-iletisim{
     left:59%;
@@ -121,9 +299,9 @@ body{
 }
 
 
-/* =========================================
+/* =========================================================
    5 - ALT WHATSAPP
-   ========================================= */
+   ========================================================= */
 
 .alt-whatsapp{
     left:1%;
@@ -134,9 +312,9 @@ body{
 }
 
 
-/* =========================================
+/* =========================================================
    6 - ALT TELEFON
-   ========================================= */
+   ========================================================= */
 
 .alt-telefon{
     left:33%;
@@ -147,10 +325,9 @@ body{
 }
 
 
-/* =========================================
-   7 - ALT İLETİŞİM / E-POSTA ALANI
-   WHATSAPP'A GİDER
-   ========================================= */
+/* =========================================================
+   7 - ALT İLETİŞİM
+   ========================================================= */
 
 .alt-email{
     left:67%;
@@ -161,9 +338,9 @@ body{
 }
 
 
-/* =========================================
-   SABİT WHATSAPP + TELEFON BUTONLARI
-   ========================================= */
+/* =========================================================
+   SABİT WHATSAPP + TELEFON
+   ========================================================= */
 
 .sabit-iletisim{
     position:fixed;
@@ -181,9 +358,9 @@ body{
 }
 
 
-/* =========================================
+/* =========================================================
    SABİT BUTON
-   ========================================= */
+   ========================================================= */
 
 .sabit-btn{
     width:56px;
@@ -216,27 +393,27 @@ body{
 }
 
 
-/* =========================================
-   WHATSAPP BUTONU
-   ========================================= */
+/* =========================================================
+   WHATSAPP
+   ========================================================= */
 
 .sabit-whatsapp{
     background:#25D366;
 }
 
 
-/* =========================================
-   TELEFON BUTONU
-   ========================================= */
+/* =========================================================
+   TELEFON
+   ========================================================= */
 
 .sabit-telefon{
     background:#6530D7;
 }
 
 
-/* =========================================
+/* =========================================================
    SABİT BUTON İKONLARI
-   ========================================= */
+   ========================================================= */
 
 .sabit-btn svg{
     width:29px;
@@ -245,9 +422,9 @@ body{
 }
 
 
-/* =========================================
+/* =========================================================
    MOBİL
-   ========================================= */
+   ========================================================= */
 
 @media(max-width:700px){
 
@@ -258,9 +435,6 @@ body{
         height:7%;
     }
 
-    /*
-       Üstteki "Teknik Destek"
-    */
     .teknik-destek-1{
         left:71%;
         top:35.5%;
@@ -268,9 +442,6 @@ body{
         height:9%;
     }
 
-    /*
-       Alttaki "TEKNİK DESTEK"
-    */
     .teknik-destek-2{
         left:56%;
         top:43.5%;
@@ -321,12 +492,25 @@ body{
         width:27px;
         height:27px;
     }
+
+    .seo-alan{
+        padding:35px 18px 80px;
+    }
+
+    .seo-kartlar{
+        grid-template-columns:1fr;
+        gap:14px;
+    }
+
+    .seo-kart{
+        padding:22px 18px;
+    }
 }
 
 
-/* =========================================
+/* =========================================================
    KÜÇÜK TELEFONLAR
-   ========================================= */
+   ========================================================= */
 
 @media(max-width:400px){
 
@@ -353,9 +537,11 @@ body{
         width:26px;
         height:26px;
     }
+
 }
 
 </style>
+
 </head>
 
 
@@ -364,119 +550,118 @@ body{
 <div class="site">
 
 
-<!-- =========================================
+<!-- =========================================================
      ANA GÖRSEL
-     ========================================= -->
+     ========================================================= -->
 
 <img
     class="ana-gorsel"
     src="anasayfa.png"
-    alt="Çobantürk Yazılım"
+    alt="Çobantürk Yazılım QR Menü ve dijital çözümler"
+    width="1920"
+    height="1080"
 >
 
 
-<!-- =========================================
+<!-- =========================================================
      İLETİŞİME GEÇ
-     ========================================= -->
+     ========================================================= -->
 
 <a
     class="tiklama iletisime-gec"
     href="https://wa.me/905406555561?text=Merhaba%20%C3%87obant%C3%BCrk%20Yaz%C4%B1l%C4%B1m%2C%20QR%20men%C3%BC%20yapt%C4%B1rmak%20istiyorum.%20Bilgi%20alabilir%20miyim%3F"
     target="_blank"
     rel="noopener noreferrer"
-    aria-label="İletişime Geç"
-></a>
+    aria-label="Çobantürk Yazılım ile iletişime geç"
+>
+</a>
 
 
-
-<!-- =========================================
-     TEKNİK DESTEK
-     1. ALAN
-     ========================================= -->
+<!-- =========================================================
+     TEKNİK DESTEK 1
+     ========================================================= -->
 
 <a
     class="tiklama teknik-destek-1"
     href="https://wa.me/905406555561?text=Merhaba%20%C3%87obant%C3%BCrk%20Yaz%C4%B1l%C4%B1m%2C%20teknik%20destek%20almak%20istiyorum."
     target="_blank"
     rel="noopener noreferrer"
-    aria-label="Teknik Destek WhatsApp"
-></a>
+    aria-label="Çobantürk Yazılım teknik destek WhatsApp"
+>
+</a>
 
 
-
-<!-- =========================================
-     TEKNİK DESTEK
-     2. ALAN
-     ========================================= -->
+<!-- =========================================================
+     TEKNİK DESTEK 2
+     ========================================================= -->
 
 <a
     class="tiklama teknik-destek-2"
     href="https://wa.me/905406555561?text=Merhaba%20%C3%87obant%C3%BCrk%20Yaz%C4%B1l%C4%B1m%2C%20teknik%20destek%20almak%20istiyorum."
     target="_blank"
     rel="noopener noreferrer"
-    aria-label="TEKNİK DESTEK WhatsApp"
-></a>
+    aria-label="Çobantürk Yazılım teknik destek"
+>
+</a>
 
 
-
-<!-- =========================================
+<!-- =========================================================
      HEMEN İLETİŞİME GEÇ
-     ========================================= -->
+     ========================================================= -->
 
 <a
     class="tiklama hemen-iletisim"
     href="https://wa.me/905406555561?text=Merhaba%20%C3%87obant%C3%BCrk%20Yaz%C4%B1l%C4%B1m%2C%20QR%20men%C3%BC%20yapt%C4%B1rmak%20istiyorum.%20Hemen%20bilgi%20alabilir%20miyim%3F"
     target="_blank"
     rel="noopener noreferrer"
-    aria-label="Hemen İletişime Geç"
-></a>
+    aria-label="Çobantürk Yazılım ile hemen iletişime geç"
+>
+</a>
 
 
-
-<!-- =========================================
+<!-- =========================================================
      ALT WHATSAPP
-     ========================================= -->
+     ========================================================= -->
 
 <a
     class="tiklama alt-whatsapp"
     href="https://wa.me/905406555561?text=Merhaba%20%C3%87obant%C3%BCrk%20Yaz%C4%B1l%C4%B1m%2C%20QR%20men%C3%BC%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum."
     target="_blank"
     rel="noopener noreferrer"
-    aria-label="WhatsApp"
-></a>
+    aria-label="Çobantürk Yazılım WhatsApp"
+>
+</a>
 
 
-
-<!-- =========================================
+<!-- =========================================================
      ALT TELEFON
-     ========================================= -->
+     ========================================================= -->
 
 <a
     class="tiklama alt-telefon"
     href="tel:+905300744561"
-    aria-label="Telefon"
-></a>
+    aria-label="Çobantürk Yazılım telefon"
+>
+</a>
 
 
-
-<!-- =========================================
+<!-- =========================================================
      ALT İLETİŞİM
-     WHATSAPP
-     ========================================= -->
+     ========================================================= -->
 
 <a
     class="tiklama alt-email"
     href="https://wa.me/905406555561?text=Merhaba%20%C3%87obant%C3%BCrk%20Yaz%C4%B1l%C4%B1m%2C%20QR%20men%C3%BC%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum."
     target="_blank"
     rel="noopener noreferrer"
-    aria-label="WhatsApp İletişim"
-></a>
+    aria-label="Çobantürk Yazılım iletişim"
+>
+</a>
 
 
-
-<!-- =========================================
-     SABİT İLETİŞİM BUTONLARI
-     ========================================= -->
+<!-- =========================================================
+     SABİT WHATSAPP + TELEFON
+     ========================================================= -->
 
 <div class="sabit-iletisim">
 
@@ -488,7 +673,7 @@ body{
         href="https://wa.me/905406555561?text=Merhaba%20%C3%87obant%C3%BCrk%20Yaz%C4%B1l%C4%B1m%2C%20QR%20men%C3%BC%20yapt%C4%B1rmak%20istiyorum.%20Bilgi%20alabilir%20miyim%3F"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="WhatsApp"
+        aria-label="Çobantürk Yazılım WhatsApp"
         title="WhatsApp"
     >
 
@@ -504,13 +689,12 @@ body{
     </a>
 
 
-
     <!-- TELEFON -->
 
     <a
         class="sabit-btn sabit-telefon"
         href="tel:+905300744561"
-        aria-label="Telefon"
+        aria-label="Çobantürk Yazılım telefon"
         title="Telefon"
     >
 
@@ -526,6 +710,73 @@ body{
     </a>
 
 </div>
+
+
+<!-- =========================================================
+     GOOGLE'IN OKUYABİLECEĞİ GERÇEK İÇERİK
+     ========================================================= -->
+
+<section class="seo-alan">
+
+    <h1>Çobantürk Yazılım</h1>
+
+    <h2>QR Menü ve Dijital Çözümler</h2>
+
+    <p>
+        Çobantürk Yazılım olarak işletmeler için modern,
+        mobil uyumlu ve kullanımı kolay dijital çözümler
+        geliştiriyoruz.
+    </p>
+
+    <p>
+        QR menü, dijital menü, web sitesi ve web yazılım
+        çözümleri ile işletmelerin dijital dünyada daha
+        kolay hizmet vermesine yardımcı oluyoruz.
+    </p>
+
+
+    <div class="seo-kartlar">
+
+
+        <div class="seo-kart">
+
+            <h3>QR Menü</h3>
+
+            <p>
+                Restoran, kafe ve işletmeler için mobil uyumlu,
+                kullanımı kolay QR menü çözümleri.
+            </p>
+
+        </div>
+
+
+        <div class="seo-kart">
+
+            <h3>Web Yazılım</h3>
+
+            <p>
+                İşletmenizin ihtiyaçlarına göre hazırlanan
+                özel web yazılım ve web uygulamaları.
+            </p>
+
+        </div>
+
+
+        <div class="seo-kart">
+
+            <h3>Dijital Çözümler</h3>
+
+            <p>
+                İşletmelerin dijital süreçlerini kolaylaştıran
+                modern yazılım ve internet çözümleri.
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
 
 
 </div>
