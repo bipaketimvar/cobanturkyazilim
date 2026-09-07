@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Paneli | QR Menü Sistem Yönetimi</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* Giriş Kutusu Sayfa Ortası Stili */
+#loginSection {
+    max-width: 400px;
+    margin: 80px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid #e7ebf0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+</style>
+</head>
+<body>
+
+<!-- GİRİŞ EKRANI -->
+<section id="loginSection" style="display:none;">
+    <h2 style="margin-bottom:15px;text-align:center;">Admin Girişi</h2>
+    <form id="adminLoginForm">
+        <div class="form-group">
+            <label>E-posta</label>
+            <input type="email" id="loginEmail" required placeholder="admin@ornek.com">
+        </div>
+        <div class="form-group">
+            <label>Şifre</label>
+            <input type="password" id="loginPassword" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Giriş Yap</button>
+    </form>
+</section>
+
+<!-- PANEL EKRANI -->
+<section id="app" style="display:none;">
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-logo">ÇT</div>
+            <div>
+                <div class="brand-title">Çobantürk Yazılım</div>
+                <div class="brand-subtitle">Sistem Yönetim Paneli</div>
+            </div>
+        </div>
+        <div class="top-actions">
+            <span id="adminEmail">Giriş Edilmedi</span>
+            <button id="logoutBtn" class="btn btn-danger">Çıkış Yap</button>
+        </div>
+    </header>
+
+    <main class="main" style="max-width:1400px; margin:0 auto; padding:24px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px;">
+            <div>
+                <h1 style="font-size:28px; margin-bottom:6px;">Genel Bakış</h1>
+                <p style="color:#6b7280; font-size:14px;">İşletmeleri, abonelik durumlarını ve üyelik sürelerini yönetin.</p>
+            </div>
+            <button id="refreshBtn" class="btn btn-secondary">↻ Yenile</button>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-bottom:24px;">
+            <div style="background:#fff; border:1px solid #e7ebf0; border-radius:18px; padding:20px;">
+                <div style="font-size:13px; color:#6b7280; font-weight:600;">Toplam İşletme</div>
+                <div id="statTotal" style="font-size:29px; font-weight:800; color:#111827;">0</div>
+            </div>
+            <div style="background:#fff; border:1px solid #e7ebf0; border-radius:18px; padding:20px;">
+                <div style="font-size:13px; color:#6b7280; font-weight:600;">Aktif İşletmeler</div>
+                <div id="statActive" style="font-size:29px; font-weight:800; color:#111827;">0</div>
+            </div>
+            <div style="background:#fff; border:1px solid #e7ebf0; border-radius:18px; padding:20px;">
+                <div style="font-size:13px; color:#6b7280; font-weight:600;">Pasif İşletmeler</div>
+                <div id="statInactive" style="font-size:29px; font-weight:800; color:#111827;">0</div>
+            </div>
+            <div style="background:#fff; border:1px solid #e7ebf0; border-radius:18px; padding:20px;">
+                <div style="font-size:13px; color:#6b7280; font-weight:600;">Süresi Dolanlar</div>
+                <div id="statExpired" style="font-size:29px; font-weight:800; color:#111827;">0</div>
+            </div>
+        </div>
+
+        <div style="background:#fff; border:1px solid #e7ebf0; border-radius:18px; padding:24px; margin-bottom:24px;">
+            <h3 style="font-size:18px; margin-bottom:16px;">➕ Yeni İşletme Hesabı Oluştur</h3>
+            <form id="adminCreateBusinessForm">
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; align-items:end;">
+                    <div class="form-group" style="margin:0;">
+                        <label>İşletme Adı</label>
+                        <input type="text" id="newBusinessTitle" placeholder="Örn: Lezzet Restoran" required />
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label>Menü Linki (Slug)</label>
+                        <input type="text" id="newBusinessSlug" placeholder="lezzet-restoran" required />
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label>İşletme E-posta</label>
+                        <input type="email" id="newBusinessEmail" placeholder="isletme@ornek.com" required />
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label>İşletme Şifresi</label>
+                        <input type="password" id="newBusinessPassword" placeholder="••••••••" required minlength="6" />
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="grid-column: 1 / -1;">İşletmeyi Kaydet (365 Gün)</button>
+                </div>
+            </form>
+        </div>
+
+        <section style="background:#fff; border:1px solid #e7ebf0; border-radius:18px; overflow:hidden;">
+            <div style="padding:18px 20px; border-bottom:1px solid #edf0f3;">
+                <h2>İşletme Listesi</h2>
+            </div>
+            <div style="padding:20px;">
+                <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+                    <input type="text" id="searchInput" placeholder="İşletme adı veya e-posta ara..." style="flex:1; min-width:240px; height:44px; border:1px solid #d9dee6; border-radius:11px; padding:0 14px; outline:none;">
+                    <select id="statusFilter" style="height:44px; border:1px solid #d9dee6; border-radius:11px; padding:0 14px; outline:none;">
+                        <option value="all">Tüm Durumlar</option>
+                        <option value="active">Aktif</option>
+                        <option value="inactive">Pasif</option>
+                        <option value="expired">Süresi Dolanlar</option>
+                    </select>
+                </div>
+
+                <div style="width:100%; overflow-x:auto;">
+                    <table style="width:100%; border-collapse:collapse; min-width:900px;">
+                        <thead>
+                            <tr style="background:#f8fafc; color:#64748b; font-size:12px; text-transform:uppercase; text-align:left;">
+                                <th style="padding:13px 12px;">İşletme Adı</th>
+                                <th style="padding:13px 12px;">E-posta</th>
+                                <th style="padding:13px 12px;">Telefon / WA</th>
+                                <th style="padding:13px 12px;">Bitiş Tarihi</th>
+                                <th style="padding:13px 12px;">Durum</th>
+                                <th style="padding:13px 12px;">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="businessTableBody">
+                            <tr><td colspan="6" style="text-align:center; padding:20px;">Yükleniyor...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+</section>
+
+<!-- DÜZENLEME MODALI -->
+<div id="businessModal" style="position:fixed; inset:0; background:rgba(15,23,42,.58); z-index:500; display:none; align-items:center; justify-content:center; padding:20px;">
+    <div style="width:100%; max-width:540px; background:#fff; border-radius:20px; overflow:hidden;">
+        <div style="padding:18px 20px; border-bottom:1px solid #edf0f3; display:flex; justify-content:space-between; align-items:center;">
+            <h3>İşletme Abonelik / Düzenleme</h3>
+            <button class="btn btn-secondary" id="closeModalBtn">✕</button>
+        </div>
+        <div style="padding:20px;">
+            <input type="hidden" id="editUid">
+            <div class="form-group"><label>İşletme Adı</label><input id="editName" type="text"></div>
+            <div class="form-group"><label>Menü Kodu (Slug)</label><input id="editSlug" type="text"></div>
+            <div class="form-group"><label>Sabit Telefon</label><input id="editPhone" type="text"></div>
+            <div class="form-group"><label>WhatsApp İletişim Hattı</label><input id="editWhatsapp" type="text"></div>
+            <div class="form-group"><label>Abonelik Bitiş Tarihi</label><input id="editExpiresAt" type="date"></div>
+            <div class="form-group">
+                <label>Durum</label>
+                <select id="editActive">
+                    <option value="true">Aktif</option>
+                    <option value="false">Pasif</option>
+                </select>
+            </div>
+        </div>
+        <div style="padding:16px 20px; border-top:1px solid #edf0f3; display:flex; justify-content:flex-end; gap:10px;">
+            <button class="btn btn-secondary" id="cancelModalBtn">İptal</button>
+            <button class="btn btn-primary" id="saveBusinessEditBtn">Kaydet</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+import { initializeApp, deleteApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { 
+    auth, 
+    db, 
+    firebaseConfig, 
+    onAuthStateChanged, 
+    signInWithEmailAndPassword,
+    signOut, 
+    doc, 
+    getDoc,
+    setDoc, 
+    updateDoc, 
+    collection, 
+    getDocs 
+} from "./firebase.js";
+
+let businesses = [];
+const $ = id => document.getElementById(id);
+
+/* ==========================================================================
+   1. OTURUM DURUMU VE ADMİN YETKİ KONTROLÜ
+   ========================================================================== */
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        try {
+            // Kullanıcının 'admins' koleksiyonunda yetkisi var mı kontrol et
+            const adminRef = doc(db, "admins", user.uid);
+            const adminSnap = await getDoc(adminRef);
+
+            if (!adminSnap.exists()) {
+                alert("Erişim Engellendi: Bu hesaba Admin yetkisi tanımlanmamış.");
+                await signOut(auth);
+                return;
+            }
+
+            // Yetkili Admin ise Paneli Göster
+            $("loginSection").style.display = "none";
+            $("app").style.display = "block";
+            if ($("adminEmail")) $("adminEmail").textContent = user.email;
+            await loadBusinesses();
+
+        } catch (err) {
+            console.error("Yetki kontrolü hatası:", err);
+            alert("Yetki doğrulanırken bir hata oluştu: " + err.message);
+            await signOut(auth);
+        }
+    } else {
+        // Oturum kapalıysa ekranı ve verileri sıfırla
+        businesses = [];
+        if ($("businessTableBody")) $("businessTableBody").innerHTML = "";
+        $("app").style.display = "none";
+        $("loginSection").style.display = "block";
+    }
+});
+
+/* ==========================================================================
+   2. GİRİŞ VE ÇIKIŞ İŞLEMLERİ
+   ========================================================================== */
+const loginForm = $("adminLoginForm");
+if (loginForm) {
+    loginForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const email = $("loginEmail").value.trim();
+        const pass = $("loginPassword").value;
+        try {
+            await signInWithEmailAndPassword(auth, email, pass);
+            showToast("Giriş kontrol ediliyor...");
+        } catch (err) {
+            alert("Giriş Başarısız: " + err.message);
+        }
+    };
+}
+
+if ($("logoutBtn")) {
+    $("logoutBtn").onclick = async () => {
+        try {
+            await signOut(auth);
+            showToast("Başarıyla çıkış yapıldı.");
+        } catch (err) {
+            alert("Çıkış hatası: " + err.message);
+        }
+    };
+}
+
+/* ==========================================================================
+   3. YARDIMCI FONKSİYONLAR
+   ========================================================================== */
+function showToast(msg) {
+    const t = $("toast");
+    if(!t) return;
+    t.textContent = msg; 
+    t.className = "show";
+    setTimeout(() => t.className = "", 3000);
+}
+
+function createSlug(val) {
+    return String(val || '')
+        .toLowerCase()
+        .replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's')
+        .replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ç/g, 'c')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+}
+
+if ($("newBusinessTitle")) {
+    $("newBusinessTitle").addEventListener("input", e => {
+        if ($("newBusinessSlug")) {
+            $("newBusinessSlug").value = createSlug(e.target.value);
+        }
+    });
+}
+
+/* ==========================================================================
+   4. YENİ İŞLETME KAYDI
+   ========================================================================== */
+const createBusinessForm = $("adminCreateBusinessForm");
+if (createBusinessForm) {
+    createBusinessForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const title = $("newBusinessTitle").value.trim();
+        const slug = createSlug($("newBusinessSlug").value.trim());
+        const email = $("newBusinessEmail").value.trim().toLowerCase();
+        const password = $("newBusinessPassword").value;
+
+        if(!title || !slug || !email || !password) {
+            alert("Lütfen tüm alanları doldurun.");
+            return;
+        }
+
+        let secondaryApp = null;
+
+        try {
+            const appName = `SecondaryApp_${Date.now()}`;
+            secondaryApp = initializeApp(firebaseConfig, appName);
+            const secondaryAuth = getAuth(secondaryApp);
+
+            const userCredential = await createUserWithEmailAndPassword(secondaryAuth, email, password);
+            const newUid = userCredential.user.uid;
+
+            const expirationDate = new Date();
+            expirationDate.setDate(expirationDate.getDate() + 365);
+
+            await setDoc(doc(db, "isletmeler", newUid), {
+                uid: newUid,
+                title: title,
+                businessName: title,
+                slug: slug,
+                email: email,
+                active: true,
+                membershipExpiresAt: expirationDate.toISOString(),
+                createdAt: new Date().toISOString()
+            });
+
+            await setDoc(doc(db, "publicMenus", slug), {
+                title: title,
+                ownerUid: newUid,
+                slug: slug,
+                active: true,
+                items: []
+            });
+
+            showToast("İşletme başarıyla oluşturuldu.");
+            createBusinessForm.reset();
+            await loadBusinesses();
+
+        } catch (error) {
+            console.error("Hata:", error);
+            alert("İşletme oluşturulurken hata: " + error.message);
+        } finally {
+            if (secondaryApp) {
+                await deleteApp(secondaryApp);
+            }
+        }
+    });
+}
+
+/* ==========================================================================
+   5. LİSTELEME VE İSTATİSTİK YÖNETİMİ
+   ========================================================================== */
+async function loadBusinesses() {
+    try {
+        const snap = await getDocs(collection(db, "isletmeler"));
+        businesses = [];
+        snap.forEach(d => businesses.push({ id: d.id, ...d.data() }));
+        renderTable();
+    } catch (err) {
+        console.error("Yükleme hatası:", err);
+    }
+}
+
+function renderTable() {
+    const search = $("searchInput") ? $("searchInput").value.toLowerCase() : "";
+    const filter = $("statusFilter") ? $("statusFilter").value : "all";
+    const now = Date.now();
+
+    let filtered = businesses.filter(b => {
+        const nameMatch = (b.businessName || b.title || "").toLowerCase().includes(search) || (b.email || "").toLowerCase().includes(search);
+        
+        let expDate = b.membershipExpiresAt ? new Date(b.membershipExpiresAt) : null;
+        const isExpired = expDate ? expDate.getTime() < now : false;
+        const isActive = b.active !== false && !isExpired;
+
+        if (filter === "active") return nameMatch && isActive;
+        if (filter === "inactive") return nameMatch && b.active === false;
+        if (filter === "expired") return nameMatch && isExpired;
+        return nameMatch;
+    });
+
+    let total = businesses.length;
+    let activeCount = 0;
+    let inactiveCount = 0;
+    let expiredCount = 0;
+
+    businesses.forEach(b => {
+        let expDate = b.membershipExpiresAt ? new Date(b.membershipExpiresAt) : null;
+        const isExp = expDate ? expDate.getTime() < now : false;
+        if (b.active === false) inactiveCount++;
+        else if (isExp) expiredCount++;
+        else activeCount++;
+    });
+
+    if($("statTotal")) $("statTotal").textContent = total;
+    if($("statActive")) $("statActive").textContent = activeCount;
+    if($("statInactive")) $("statInactive").textContent = inactiveCount;
+    if($("statExpired")) $("statExpired").textContent = expiredCount;
+
+    const tbody = $("businessTableBody");
+    if (!tbody) return;
+
+    if (!filtered.length) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;">Kayıt bulunamadı.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = filtered.map(b => {
+        let expStr = "Belirtilmedi";
+        let isExpired = false;
+        if (b.membershipExpiresAt) {
+            const d = new Date(b.membershipExpiresAt);
+            if (!isNaN(d)) {
+                expStr = d.toLocaleDateString("tr-TR");
+                if (d.getTime() < now) isExpired = true;
+            }
+        }
+
+        const badge = (b.active !== false && !isExpired) 
+            ? `<span style="background:#dcfce7; color:#15803d; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:700;">Aktif</span>` 
+            : `<span style="background:#fee2e2; color:#b91c1c; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:700;">${isExpired ? "Süresi Doldu" : "Pasif"}</span>`;
+
+        const phoneInfo = [b.phone, b.whatsapp].filter(Boolean).join(" / ") || "-";
+
+        return `<tr>
+            <td style="padding:15px 12px; border-bottom:1px solid #eef1f4;"><b>${b.businessName || b.title || "Adsız"}</b></td>
+            <td style="padding:15px 12px; border-bottom:1px solid #eef1f4;">${b.email || "-"}</td>
+            <td style="padding:15px 12px; border-bottom:1px solid #eef1f4;">${phoneInfo}</td>
+            <td style="padding:15px 12px; border-bottom:1px solid #eef1f4;">${expStr}</td>
+            <td style="padding:15px 12px; border-bottom:1px solid #eef1f4;">${badge}</td>
+            <td style="padding:15px 12px; border-bottom:1px solid #eef1f4;">
+                <div style="display:flex; gap:6px;">
+                    <button class="btn btn-secondary" style="min-height:32px; padding:0 10px; font-size:12px;" data-edit="${b.id}">Düzenle</button>
+                    <button class="btn ${b.active === false ? "btn-success" : "btn-danger"}" style="min-height:32px; padding:0 10px; font-size:12px;" data-toggle="${b.id}">
+                        ${b.active === false ? "Aktif Et" : "Pasif Yap"}
+                    </button>
+                </div>
+            </td>
+        </tr>`;
+    }).join("");
+
+    tbody.querySelectorAll("[data-edit]").forEach(btn => {
+        btn.onclick = () => openEditModal(btn.dataset.edit);
+    });
+
+    tbody.querySelectorAll("[data-toggle]").forEach(btn => {
+        btn.onclick = () => toggleStatus(btn.dataset.toggle);
+    });
+}
+
+/* ==========================================================================
+   6. MODAL VE DÜZENLEME İŞLEMLERİ
+   ========================================================================== */
+function openEditModal(id) {
+    const b = businesses.find(x => x.id === id);
+    if (!b) return;
+
+    $("editUid").value = b.id;
+    $("editName").value = b.businessName || b.title || "";
+    $("editSlug").value = b.slug || "";
+    $("editPhone").value = b.phone || "";
+    $("editWhatsapp").value = b.whatsapp || "";
+    $("editActive").value = b.active !== false ? "true" : "false";
+
+    if (b.membershipExpiresAt) {
+        const d = new Date(b.membershipExpiresAt);
+        if (!isNaN(d)) {
+            $("editExpiresAt").value = d.toISOString().split("T")[0];
+        }
+    } else {
+        $("editExpiresAt").value = "";
+    }
+
+    $("businessModal").style.display = "flex";
+}
+
+function closeModal() {
+    $("businessModal").style.display = "none";
+}
+
+if ($("closeModalBtn")) $("closeModalBtn").onclick = closeModal;
+if ($("cancelModalBtn")) $("cancelModalBtn").onclick = closeModal;
+
+if ($("saveBusinessEditBtn")) {
+    $("saveBusinessEditBtn").onclick = async () => {
+        const id = $("editUid").value;
+        if (!id) return;
+        
+        const expVal = $("editExpiresAt").value;
+        const nameVal = $("editName").value.trim();
+        const slugVal = createSlug($("editSlug").value.trim());
+
+        const updateData = {
+            businessName: nameVal,
+            title: nameVal,
+            slug: slugVal,
+            phone: $("editPhone").value.trim(),
+            whatsapp: $("editWhatsapp").value.trim(),
+            active: $("editActive").value === "true"
+        };
+
+        if (expVal) {
+            updateData.membershipExpiresAt = new Date(expVal).toISOString();
+        }
+
+        try {
+            await updateDoc(doc(db, "isletmeler", id), updateData);
+            if (slugVal) {
+                await setDoc(doc(db, "publicMenus", slugVal), updateData, { merge: true });
+            }
+            showToast("İşletme güncellendi.");
+            closeModal();
+            await loadBusinesses();
+        } catch (err) {
+            alert("Hata: " + err.message);
+        }
+    };
+}
+
+async function toggleStatus(id) {
+    const b = businesses.find(x => x.id === id);
+    if (!b) return;
+    const newStatus = b.active === false;
+    try {
+        await updateDoc(doc(db, "isletmeler", id), { active: newStatus });
+        if(b.slug) {
+            await setDoc(doc(db, "publicMenus", b.slug), { active: newStatus }, { merge: true });
+        }
+        showToast(`İşletme ${newStatus ? "Aktif" : "Pasif"} yapıldı.`);
+        await loadBusinesses();
+    } catch (err) {
+        alert("Güncelleme hatası: " + err.message);
+    }
+}
+
+if ($("searchInput")) $("searchInput").oninput = renderTable;
+if ($("statusFilter")) $("statusFilter").onchange = renderTable;
+if ($("refreshBtn")) $("refreshBtn").onclick = loadBusinesses;
+</script>
+</body>
+</html>

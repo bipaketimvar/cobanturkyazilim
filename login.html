@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Girişi | QR Menü</title>
+<link rel="stylesheet" href="style.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    background:#f4f6f8;color:#17202a;min-height:100vh;
+    display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.login-card{
+    background:#fff;width:100%;max-width:400px;padding:32px;
+    border-radius:20px;border:1px solid #e7ebf0;box-shadow:0 10px 25px rgba(0,0,0,.05);
+}
+.brand{text-align:center;margin-bottom:24px;}
+.brand-logo{
+    width:56px;height:56px;border-radius:16px;background:#111827;color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:20px;margin-bottom:12px;
+}
+.brand-title{font-size:20px;font-weight:800;color:#111827;}
+.brand-subtitle{font-size:13px;color:#6b7280;margin-top:4px;}
+
+.form-group{margin-bottom:18px;}
+.form-group label{display:block;margin-bottom:8px;font-size:13px;font-weight:700;color:#374151;}
+.form-group input{
+    width:100%;border:1px solid #d7dde5;border-radius:12px;padding:12px 14px;
+    outline:none;background:#fff;font-size:14px;
+}
+.form-group input:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+
+.btn{
+    width:100%;border:0;border-radius:12px;min-height:46px;padding:0 18px;
+    font-weight:700;background:#2563eb;color:#fff;cursor:pointer;transition:.2s;
+}
+.btn:hover{background:#1d4ed8;}
+.error-msg{color:#dc2626;font-size:13px;margin-top:12px;text-align:center;display:none;}
+</style>
+</head>
+<body>
+
+<div class="login-card">
+    <div class="brand">
+        <div class="brand-logo">ÇT</div>
+        <div class="brand-title">Admin Girişi</div>
+        <div class="brand-subtitle">Sistem Yönetim Paneline Bağlanın</div>
+    </div>
+
+    <form id="loginForm">
+        <div class="form-group">
+            <label>E-posta Adresi</label>
+            <input type="email" id="email" placeholder="admin@ornek.com" required>
+        </div>
+        <div class="form-group">
+            <label>Şifre</label>
+            <input type="password" id="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn" id="loginBtn">Giriş Yap</button>
+        <div id="errorMsg" class="error-msg"></div>
+    </form>
+</div>
+
+<script type="module">
+import { auth, db, doc, getDoc, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "./firebase.js";
+
+const form = document.getElementById("loginForm");
+const errorMsg = document.getElementById("errorMsg");
+
+async function checkAdmin(uid) {
+    try {
+        const snap = await getDoc(doc(db, "roles", uid));
+        return snap.exists() && snap.data().role === "admin";
+    } catch {
+        return false;
+    }
+}
+
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        const isAdmin = await checkAdmin(user.uid);
+        if (isAdmin) {
+            window.location.href = "admin.html";
+        } else {
+            errorMsg.textContent = "Yetkisiz erişim: Bu hesap Yönetici değildir!";
+            errorMsg.style.display = "block";
+            await signOut(auth);
+        }
+    }
+});
+
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorMsg.style.display = "none";
+    
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    try {
+        const res = await signInWithEmailAndPassword(auth, email, password);
+        const isAdmin = await checkAdmin(res.user.uid);
+        if (isAdmin) {
+            window.location.href = "admin.html";
+        } else {
+            errorMsg.textContent = "Hata: Yalnızca yöneticiler giriş yapabilir.";
+            errorMsg.style.display = "block";
+            await signOut(auth);
+        }
+    } catch (err) {
+        errorMsg.textContent = "Giriş başarısız: " + err.message;
+        errorMsg.style.display = "block";
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Çobantürk Yazılım - İşletme Paneli</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+:root{
+    --purple:#5b3df5;
+    --purple-dark:#4528d6;
+    --orange:#ff8a00;
+    --green:#16a34a;
+    --red:#dc2626;
+    --dark:#111827;
+    --text:#1f2937;
+    --muted:#6b7280;
+    --bg:#f5f7fb;
+    --white:#ffffff;
+    --line:#e5e7eb;
+    --shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+body{ font-family: Arial, Helvetica, sans-serif; background:var(--bg); color:var(--text); }
+button, input, textarea, select{ font:inherit; }
+button{ cursor:pointer; }
+.hidden{ display:none !important; }
+
+#authGate, #membershipExpired{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background: linear-gradient(135deg, #4c1d95, #7c3aed 55%, #f97316);
+}
+.auth-card{ width:min(430px, 100%); background:#fff; border-radius:25px; padding:28px; box-shadow: 0 25px 70px rgba(0,0,0,.25); }
+.auth-logo{ width:62px; height:62px; border-radius:18px; display:grid; place-items:center; color:#fff; font-size:21px; font-weight:900; margin-bottom:15px; background: linear-gradient(135deg, var(--purple), var(--orange)); }
+.auth-card h1{ font-size:25px; margin-bottom:7px; }
+.auth-subtitle{ color:var(--muted); line-height:1.5; margin-bottom:20px; }
+
+.field{ margin-bottom:14px; }
+.field label{ display:block; font-size:13px; font-weight:800; margin-bottom:7px; }
+.field input, .field textarea, .field select{ width:100%; border:1px solid var(--line); border-radius:12px; padding:12px 13px; outline:none; background:#fff; transition:.2s; }
+.field textarea{ min-height:80px; resize:vertical; }
+.field input:focus, .field textarea:focus, .field select:focus{ border-color:var(--purple); box-shadow: 0 0 0 3px rgba(91,61,245,.10); }
+
+.btn{ border:0; border-radius:12px; padding:12px 16px; font-weight:800; transition:.2s; }
+.btn:active{ transform:scale(.98); }
+.btn-primary{ background:var(--purple); color:#fff; }
+.btn-primary:hover{ background:var(--purple-dark); }
+.btn-orange{ background:var(--orange); color:#fff; }
+.btn-green{ background:var(--green); color:#fff; }
+.btn-secondary{ background:#f3f4f6; color:#374151; }
+.full{ width:100%; }
+.text-btn{ width:100%; border:0; background:transparent; color:var(--purple); font-weight:700; padding:12px; margin-top:5px; }
+.auth-message{ min-height:20px; margin-top:12px; color:#b91c1c; font-size:13px; line-height:1.4; text-align:center; }
+
+#app{ min-height:100vh; }
+.topbar{ position:sticky; top:0; z-index:100; background:#fff; border-bottom:1px solid var(--line); padding:12px 16px; display:flex; justify-content:space-between; align-items:center; gap:12px; box-shadow: 0 3px 12px rgba(0,0,0,.04); }
+.brand{ display:flex; align-items:center; gap:10px; }
+.brand-logo{ width:45px; height:45px; border-radius:13px; display:grid; place-items:center; background: linear-gradient(135deg, var(--purple), var(--orange)); color:#fff; font-weight:900; }
+.brand-title{ font-weight:900; font-size:15px; }
+.brand-subtitle{ color:var(--muted); font-size:11px; margin-top:2px; }
+.top-actions{ display:flex; align-items:center; gap:8px; }
+.user-email{ color:var(--muted); font-size:12px; }
+
+.main{ width:min(1100px, calc(100% - 28px)); margin:20px auto 40px; }
+.page-header{ display:flex; justify-content:space-between; align-items:center; gap:15px; margin-bottom:18px; }
+.page-header h1{ font-size:27px; margin-bottom:5px; }
+.page-header p{ color:var(--muted); font-size:14px; }
+.header-actions{ display:flex; gap:8px; flex-wrap:wrap; }
+
+.membership{ background:#fff; border:1px solid var(--line); border-radius:18px; padding:16px; margin-bottom:18px; box-shadow:var(--shadow); display:flex; justify-content:space-between; align-items:center; gap:15px; }
+.membership-left strong{ display:block; margin-bottom:4px; }
+.membership-left span{ color:var(--muted); font-size:12px; }
+.membership-time{ color:var(--green); font-weight:900; font-size:14px; }
+
+.card{ background:#fff; border:1px solid var(--line); border-radius:18px; padding:20px; box-shadow:var(--shadow); margin-bottom:18px; }
+.card h2{ font-size:19px; margin-bottom:5px; }
+.card-description{ color:var(--muted); font-size:13px; margin-bottom:18px; }
+
+.grid{ display:grid; grid-template-columns: 1fr 1fr; gap:18px; }
+
+.cover-manager{ display:flex; flex-direction:column; gap:12px; margin-bottom:20px; }
+.cover-preview{ width:100%; min-height:190px; border-radius:20px; overflow:hidden; background:linear-gradient(135deg,#111827,#252b3a); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:#9ca3af; font-weight:800; text-align:center; }
+.cover-preview img{ width:100%; max-height:330px; object-fit:cover; display:block; }
+.file-button{ display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:11px 14px; border-radius:12px; background:#f3f4f6; border:1px solid var(--line); cursor:pointer; font-weight:700; }
+.upload-status{ font-size:13px; color:var(--muted); margin-top:8px; }
+
+.qr-box{ text-align:center; padding:20px; border-radius:16px; background:#fafafa; border:1px solid var(--line); }
+#qrcode{ width:220px; min-height:220px; margin:15px auto; display:flex; justify-content:center; align-items:center; background:#fff; padding:10px; border-radius:12px; }
+#qrcode img{ display:block; margin:0 auto; }
+.qr-buttons{ display:flex; justify-content:center; gap:8px; flex-wrap:wrap; }
+
+.brochure-pages{ display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:12px; margin-top:14px; }
+.brochure-page{ position:relative; border:1px solid var(--line); border-radius:14px; padding:8px; background:#f9fafb; }
+.brochure-page img{ width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:10px; display:block; background:#eee; }
+.brochure-page-number{ font-size:12px; font-weight:700; color:var(--muted); margin-top:7px; text-align:center; }
+.brochure-page-remove{ position:absolute; right:12px; top:12px; width:30px; height:30px; border:0; border-radius:50%; background:#fff; color:var(--red); font-size:18px; font-weight:800; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.12); }
+.brochure-empty{ padding:14px; border:1px dashed var(--line); border-radius:12px; color:var(--muted); text-align:center; font-size:13px; margin-top:12px; }
+.brochure-actions{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; align-items:center; }
+.brochure-toggle{ display:flex; align-items:center; gap:8px; font-size:14px; font-weight:700; }
+.brochure-toggle input{ width:18px; height:18px; }
+
+#toast{ position:fixed; left:50%; bottom:25px; transform: translate(-50%,20px); background:#111827; color:#fff; padding:13px 18px; border-radius:12px; font-size:13px; font-weight:700; opacity:0; pointer-events:none; transition:.25s; z-index:9999; max-width: calc(100% - 30px); text-align:center; }
+#toast.show{ opacity:1; transform: translate(-50%,0); }
+#toast.error{ background:var(--red); }
+
+@media(max-width:750px){ .grid{ grid-template-columns:1fr; } .topbar{ align-items:flex-start; } .user-email{ display:none; } .page-header{ align-items:flex-start; flex-direction:column; } .header-actions{ width:100%; } .header-actions .btn{ flex:1; } .membership{ align-items:flex-start; flex-direction:column; } }
+@media(max-width:480px){ .main{ width: calc(100% - 18px); margin-top:12px; } .card{ padding:16px; border-radius:15px; } .topbar{ padding:10px; } .brand-title{ font-size:14px; } .page-header h1{ font-size:23px; } }
+</style>
+</head>
+<body>
+
+<section id="authGate">
+    <div class="auth-card">
+        <div class="auth-logo">ÇT</div>
+        <h1>İşletme Girişi</h1>
+        <p class="auth-subtitle">Hesabınıza erişmek için e-posta ve şifrenizi girin.</p>
+        
+        <form id="loginForm" onsubmit="event.preventDefault(); window.loginBusiness();">
+            <div class="field">
+                <label for="loginEmail">E-posta Adresi</label>
+                <input type="email" id="loginEmail" placeholder="ornek@isletme.com" required />
+            </div>
+            <div class="field">
+                <label for="loginPassword">Şifre</label>
+                <input type="password" id="loginPassword" placeholder="******" required />
+            </div>
+            <button type="submit" class="btn btn-primary full">Giriş Yap</button>
+            <button type="button" class="text-btn" onclick="window.resetPassword()">Şifremi Unuttum</button>
+        </form>
+        <div id="authMessage" class="auth-message"></div>
+    </div>
+</section>
+
+<section id="membershipExpired" class="hidden">
+    <div class="auth-card" style="text-align: center;">
+        <div class="auth-logo" style="margin: 0 auto 15px;">ÇT</div>
+        <h1>Abonelik Süresi Doldu</h1>
+        <p class="auth-subtitle">İşletmenizin QR menü abonelik süresi sona ermiştir. Devam etmek için lütfen sistem yöneticisi ile iletişime geçin.</p>
+        <p class="field"><strong id="expiredEmail"></strong></p>
+        <button class="btn btn-secondary full" onclick="window.logoutBusiness()">Çıkış Yap</button>
+    </div>
+</section>
+
+<section id="app" class="hidden">
+
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-logo">ÇT</div>
+            <div>
+                <div class="brand-title">Çobantürk Yazılım</div>
+                <div class="brand-subtitle">QR Menü İşletme Paneli</div>
+            </div>
+        </div>
+        <div class="top-actions">
+            <span id="accountEmail" class="user-email"></span>
+            <button class="btn btn-secondary" onclick="window.logoutBusiness()">Çıkış</button>
+        </div>
+    </header>
+
+    <main class="main">
+
+        <div class="page-header">
+            <div>
+                <h1>Hoş Geldiniz</h1>
+                <p id="accountBusinessName">İşletmeniz</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="window.openMenu()">👁️ Menüyü Gör</button>
+                <button class="btn btn-primary" onclick="window.saveAll()">💾 Kaydet</button>
+            </div>
+        </div>
+
+        <div class="membership">
+            <div class="membership-left">
+                <strong>📅 QR Menü Üyeliği</strong>
+                <span>Kalan üyelik süreniz</span>
+            </div>
+            <div id="membershipCountdown" class="membership-time">Hesaplanıyor...</div>
+        </div>
+
+        <div class="grid">
+
+            <section class="card">
+                <h2>🏪 İşletme Bilgileri</h2>
+                <p class="card-description">Müşterilerinizin QR menüsünde yönlendirileceği bilgileri düzenleyin.</p>
+
+                <div class="cover-manager">
+                    <label style="font-size:14px;font-weight:800;">🖼️ Menü Üst Kapak Görseli</label>
+                    <div id="coverPreview" class="cover-preview">Kapak görseli yüklenmedi</div>
+                    <label class="file-button">📷 Kapak Görseli Yükle
+                        <input id="coverFile" type="file" accept="image/*" hidden>
+                    </label>
+                    <div id="coverUploadStatus" class="upload-status">Görsel seçilmedi</div>
+                </div>
+
+                <div class="field">
+                    <label>İşletme Adı</label>
+                    <input id="businessName" placeholder="İşletme adınız">
+                </div>
+
+                <div class="field">
+                    <label>WhatsApp Sipariş / İletişim Hattı</label>
+                    <input id="whatsapp" type="tel" placeholder="05XX XXX XX XX">
+                </div>
+
+                <div class="field">
+                    <label>Garson Çağrı / Sabit Telefon</label>
+                    <input id="phone" type="tel" placeholder="0362 XXX XX XX">
+                </div>
+
+                <div class="field">
+                    <label>Harita / Adres Link Bilgisi</label>
+                    <textarea id="address" placeholder="İşletme adresiniz"></textarea>
+                </div>
+
+                <div class="field">
+                    <label>Menü Kodu (Slug)</label>
+                    <input id="slug" placeholder="ornek-isletme">
+                </div>
+
+                <label style="display:flex; align-items:center; gap:10px; font-size:14px; font-weight:700; margin-bottom:18px;">
+                    <input id="active" type="checkbox" checked> QR Menüyü aktif et
+                </label>
+
+                <button class="btn btn-primary full" onclick="window.saveSettings()">💾 Bilgileri Kaydet</button>
+            </section>
+
+            <section class="card">
+                <h2>📱 QR Menü</h2>
+                <p class="card-description">Müşterileriniz bu QR kodu okutarak doğrudan görsel menünüze ulaşır.</p>
+
+                <div class="qr-box">
+                    <strong id="qrBusinessName">İşletmeniz</strong>
+                    <div id="qrcode">QR hazırlanıyor...</div>
+                    <div class="qr-buttons">
+                        <button class="btn btn-primary" onclick="window.downloadQR()">⬇️ QR İndir</button>
+                        <button class="btn btn-secondary" onclick="window.printQR()">🖨️ Yazdır</button>
+                    </div>
+                    <br>
+                    <button class="btn btn-orange full" onclick="window.copyMenuUrl()">🔗 Menü Linkini Kopyala</button>
+                    <br><br>
+                    <button class="btn btn-green full" onclick="window.shareWhatsApp()">📲 WhatsApp'ta Paylaş</button>
+                </div>
+            </section>
+
+        </div>
+
+        <section class="card" style="margin-top: 18px;">
+            <h2>📖 Menü Görselleri (Sayfalar)</h2>
+            <p class="card-description">Menü sayfalarınızı sırasıyla yükleyin. Müşterileriniz bu sayfaları tam ekran inceleyebilir.</p>
+
+            <label class="file-button">📄 Menü Sayfası Ekle
+                <input id="brochureFile" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
+            </label>
+            <div id="brochureUploadStatus" class="upload-status">JPG, PNG veya WEBP • Birden fazla sayfa seçebilirsiniz.</div>
+
+            <div class="brochure-actions">
+                <label class="brochure-toggle">
+                    <input id="brochureActive" type="checkbox" checked> Menü Sayfaları Yayında
+                </label>
+                <button type="button" class="btn btn-secondary" id="clearBrochureBtn" style="margin-left:auto;">Tüm Sayfaları Kaldır</button>
+            </div>
+
+            <div id="brochurePages" class="brochure-pages"></div>
+        </section>
+
+    </main>
+
+</section>
+
+<div id="toast"></div>
+
+<script type="module">
+import {
+    auth,
+    db,
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail,
+    signOut,
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
+    serverTimestamp
+} from "./firebase.js";
+
+const IMGBB_API_KEY = "8a34c41a66f56dbbe413fb282aab16a4";
+const IMGBB_ENDPOINT = "https://api.imgbb.com/1/upload";
+
+let currentUser = null;
+let currentBusiness = null;
+let currentBusinessRef = null;
+let membershipTimer = null;
+let toastTimer = null;
+let coverImageUrl = "";
+let brochurePages = [];
+let brochureActive = true;
+
+const $ = id => document.getElementById(id);
+
+function showToast(message, type = "success") {
+    const toast = $("toast");
+    if (!toast) return;
+    toast.textContent = message;
+    toast.className = type === "error" ? "show error" : "show";
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.className = "", 3500);
+}
+
+function escapeHtml(value) {
+    return String(value ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+function firebaseError(error) {
+    const code = error?.code || "";
+    const map = {
+        "auth/invalid-email":"Geçersiz e-posta adresi.",
+        "auth/invalid-credential":"E-posta veya şifre hatalı.",
+        "auth/user-not-found":"Bu hesap bulunamadı.",
+        "auth/wrong-password":"Şifre hatalı.",
+        "auth/too-many-requests":"Çok fazla deneme yapıldı. Biraz sonra tekrar deneyin."
+    };
+    return map[code] || error?.message || "Bir hata oluştu.";
+}
+
+function createSlug(value) {
+    return String(value || "")
+        .toLowerCase()
+        .replace(/ğ/g,"g").replace(/ü/g,"u").replace(/ş/g,"s")
+        .replace(/ı/g,"i").replace(/ö/g,"o").replace(/ç/g,"c")
+        .replace(/[^a-z0-9]+/g,"-")
+        .replace(/^-+|-+$/g,"")
+        .substring(0,50);
+}
+
+function toDate(value) {
+    if (!value) return null;
+    if (typeof value.toDate === "function") return value.toDate();
+    if (value.seconds !== undefined) return new Date(value.seconds * 1000);
+    const d = new Date(value);
+    return Number.isNaN(d.getTime()) ? null : d;
+}
+
+function membershipValid() {
+    const end = toDate(currentBusiness?.membershipExpiresAt ?? currentBusiness?.subscriptionEnd);
+    return currentBusiness?.active !== false && !!(end && end.getTime() > Date.now());
+}
+
+function showApp() {
+    $("authGate")?.classList.add("hidden");
+    $("membershipExpired")?.classList.add("hidden");
+    $("app")?.classList.remove("hidden");
+}
+
+function showExpired() {
+    $("authGate")?.classList.add("hidden");
+    $("app")?.classList.add("hidden");
+    $("membershipExpired")?.classList.remove("hidden");
+    const email = $("expiredEmail");
+    if (email) email.textContent = currentUser?.email || "";
+}
+
+function showLogin() {
+    $("authGate")?.classList.remove("hidden");
+    $("membershipExpired")?.classList.add("hidden");
+    $("app")?.classList.add("hidden");
+}
+
+window.loginBusiness = async function() {
+    const email = $("loginEmail").value.trim().toLowerCase();
+    const password = $("loginPassword").value;
+    const msg = $("authMessage");
+    if (msg) msg.textContent = "";
+
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) { 
+        if (msg) msg.textContent = firebaseError(error); 
+    }
+};
+
+window.resetPassword = async function() {
+    const email = $("loginEmail").value.trim().toLowerCase();
+    const msg = $("authMessage");
+    if (!email) { 
+        if (msg) msg.textContent = "Önce e-posta adresinizi yazın."; 
+        return; 
+    }
+    try {
+        await sendPasswordResetEmail(auth, email);
+        if (msg) msg.textContent = "Şifre sıfırlama e-postası gönderildi.";
+    } catch (error) { 
+        if (msg) msg.textContent = firebaseError(error); 
+    }
+};
+
+window.logoutBusiness = async function() {
+    try { await signOut(auth); } catch (error) { showToast(error.message, "error"); }
+};
+
+function resizeImageToBlob(file, maxSize, quality) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                let width = img.width, height = img.height;
+                if (width > maxSize || height > maxSize) {
+                    const ratio = Math.min(maxSize / width, maxSize / height);
+                    width = Math.round(width * ratio);
+                    height = Math.round(height * ratio);
+                }
+                const canvas = document.createElement("canvas");
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, width, height);
+                canvas.toBlob((blob) => {
+                    if (blob) resolve(blob);
+                    else reject(new Error("Görsel dönüştürülemedi."));
+                }, "image/jpeg", quality);
+            };
+            img.onerror = () => reject(new Error("Görsel okunamadı."));
+            img.src = e.target.result;
+        };
+        reader.onerror = () => reject(new Error("Dosya okuma hatası."));
+        reader.readAsDataURL(file);
+    });
+}
+
+async function uploadToImgBB(file, options = {}) {
+    if (!file || !file.type.startsWith("image/")) throw new Error("Lütfen bir görsel dosyası seçin.");
+    const maxSize = options.maxSize || 2000;
+    const quality = options.quality || .85;
+    const blob = await resizeImageToBlob(file, maxSize, quality);
+    const form = new FormData();
+    form.append("key", IMGBB_API_KEY);
+    form.append("image", blob, file.name.replace(/\.[^.]+$/, "") + ".jpg");
+    const response = await fetch(IMGBB_ENDPOINT, { method:"POST", body:form });
+    let result = null;
+    try { result = await response.json(); } catch (_) {}
+    if (!response.ok || !result?.success || !result?.data?.url) throw new Error("ImgBB yüklemesi başarısız.");
+    return result.data.url;
+}
+
+function getMenuUrl() {
+    const slug = $("slug")?.value.trim() || currentBusiness?.slug || "";
+    const baseUrl = window.location.origin + window.location.pathname.replace("isletme.html", "");
+    return `${baseUrl}menu.html?slug=${encodeURIComponent(slug)}`;
+}
+
+function renderQR() {
+    const container = $("qrcode");
+    if (!container) return;
+    container.innerHTML = "";
+    const url = getMenuUrl();
+    if (window.QRCode) {
+        new QRCode(container, {
+            text: url,
+            width: 200,
+            height: 200,
+            colorDark: "#111827",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    }
+}
+
+function renderCover() {
+    const preview = $("coverPreview");
+    if (!preview) return;
+    if (coverImageUrl) {
+        preview.innerHTML = `<img src="${escapeHtml(coverImageUrl)}" alt="Kapak Görseli">`;
+    } else {
+        preview.innerHTML = "Kapak görseli yüklenmedi";
+    }
+}
+
+function renderBrochures() {
+    const container = $("brochurePages");
+    if (!container) return;
+    if (!brochurePages || brochurePages.length === 0) {
+        container.innerHTML = `<div class="brochure-empty" style="grid-column: 1 / -1;">Henüz eklenmiş menü sayfası yok.</div>`;
+        return;
+    }
+    container.innerHTML = brochurePages.map((url, index) => `
+        <div class="brochure-page">
+            <button type="button" class="brochure-page-remove" onclick="window.removeBrochurePage(${index})">×</button>
+            <img src="${escapeHtml(url)}" alt="Sayfa ${index + 1}">
+            <div class="brochure-page-number">Sayfa ${index + 1}</div>
+        </div>
+    `).join("");
+}
+
+window.removeBrochurePage = function(index) {
+    brochurePages.splice(index, 1);
+    renderBrochures();
+    showToast("Sayfa kaldırıldı (Kaydetmeyi unutmayın).");
+};
+
+function updateTimer() {
+    const end = toDate(currentBusiness?.membershipExpiresAt ?? currentBusiness?.subscriptionEnd);
+    const elem = $("membershipCountdown");
+    if (!elem) return;
+    if (!end) { elem.textContent = "Tanımlanmadı"; return; }
+    
+    const diff = end.getTime() - Date.now();
+    if (diff <= 0) {
+        elem.textContent = "Süresi Doldu";
+        elem.style.color = "var(--red)";
+        showExpired();
+        return;
+    }
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    elem.textContent = `${days} gün ${hours} saat kaldı`;
+}
+
+function populateForm(data) {
+    currentBusiness = data;
+    const bName = data.businessName || data.name || data.title || "İşletmeniz";
+    coverImageUrl = data.coverImage || "";
+    brochurePages = Array.isArray(data.brochurePages) ? [...data.brochurePages] : [];
+    brochureActive = data.brochureActive !== false;
+
+    if ($("accountEmail")) $("accountEmail").textContent = currentUser?.email || "";
+    if ($("accountBusinessName")) $("accountBusinessName").textContent = bName;
+    if ($("qrBusinessName")) $("qrBusinessName").textContent = bName;
+
+    if ($("businessName")) $("businessName").value = bName;
+    if ($("whatsapp")) $("whatsapp").value = data.whatsapp || "";
+    if ($("phone")) $("phone").value = data.phone || "";
+    if ($("address")) $("address").value = data.address || "";
+    if ($("slug")) $("slug").value = data.slug || createSlug(bName);
+    if ($("active")) $("active").checked = data.active !== false;
+    if ($("brochureActive")) $("brochureActive").checked = brochureActive;
+
+    renderCover();
+    renderBrochures();
+    renderQR();
+
+    if (membershipTimer) clearInterval(membershipTimer);
+    updateTimer();
+    membershipTimer = setInterval(updateTimer, 60000);
+}
+
+window.saveSettings = async function() {
+    if (!currentBusinessRef) return;
+    const name = $("businessName").value.trim();
+    const whatsapp = $("whatsapp").value.trim();
+    const phone = $("phone").value.trim();
+    const address = $("address").value.trim();
+    let slug = createSlug($("slug").value.trim() || name);
+    const active = $("active").checked;
+    const isBrochureActive = $("brochureActive").checked;
+
+    if (!name) { showToast("İşletme adı boş olamaz.", "error"); return; }
+
+    try {
+        const payload = {
+            name,
+            businessName: name,
+            title: name,
+            whatsapp,
+            phone,
+            address,
+            slug,
+            active,
+            coverImage: coverImageUrl,
+            brochurePages,
+            brochureActive: isBrochureActive,
+            updatedAt: serverTimestamp()
+        };
+        await updateDoc(currentBusinessRef, payload);
+        if (slug) {
+            await setDoc(doc(db, "publicMenus", slug), payload, { merge: true });
+        }
+        showToast("Bilgiler başarıyla güncellendi.");
+        renderQR();
+    } catch (error) {
+        showToast("Kaydetme hatası: " + error.message, "error");
+    }
+};
+
+window.saveAll = window.saveSettings;
+
+window.openMenu = function() {
+    window.open(getMenuUrl(), "_blank");
+};
+
+window.copyMenuUrl = function() {
+    const url = getMenuUrl();
+    navigator.clipboard.writeText(url)
+        .then(() => showToast("Menü linki kopyalandı!"))
+        .catch(() => showToast("Kopyalama başarısız oldu.", "error"));
+};
+
+window.shareWhatsApp = function() {
+    const url = getMenuUrl();
+    const text = encodeURIComponent(`Merhaba, dijital QR menümüze buradan ulaşabilirsiniz: ${url}`);
+    window.open(`https://api.whatsapp.com/send?text=${text}`, "_blank");
+};
+
+window.downloadQR = function() {
+    const qrImg = document.querySelector("#qrcode img");
+    if (!qrImg) { showToast("QR Kod oluşturulamadı.", "error"); return; }
+    const a = document.createElement("a");
+    a.href = qrImg.src;
+    a.download = `${$("slug").value || "qr-menu"}-qr.png`;
+    a.click();
+};
+
+window.printQR = function() {
+    const qrImg = document.querySelector("#qrcode img");
+    if (!qrImg) return;
+    const win = window.open("", "_blank");
+    win.document.write(`<html><head><title>QR Kod Yazdır</title></head><body style="display:flex;justify-content:center;align-items:center;height:100vh;margin:0;"><img src="${qrImg.src}" style="width:300px;"/></body></html>`);
+    win.document.close();
+    win.focus();
+    setTimeout(() => win.print(), 500);
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    $("coverFile")?.addEventListener("change", async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const status = $("coverUploadStatus");
+        if (status) status.textContent = "Yükleniyor...";
+        try {
+            coverImageUrl = await uploadToImgBB(file, { maxSize: 1600 });
+            renderCover();
+            if (status) status.textContent = "Görsel yüklendi. (Kaydet butonuna basın)";
+            showToast("Kapak görseli yüklendi.");
+        } catch (err) {
+            if (status) status.textContent = "Yükleme başarısız.";
+            showToast(err.message, "error");
+        }
+    });
+
+    $("brochureFile")?.addEventListener("change", async (e) => {
+        const files = Array.from(e.target.files);
+        if (!files.length) return;
+        const status = $("brochureUploadStatus");
+        if (status) status.textContent = `${files.length} görsel işleniyor...`;
+
+        for (const file of files) {
+            try {
+                const url = await uploadToImgBB(file, { maxSize: 1800 });
+                brochurePages.push(url);
+            } catch (err) {
+                showToast(`Dosya yüklenemedi: ${file.name}`, "error");
+            }
+        }
+        renderBrochures();
+        if (status) status.textContent = "Görseller eklendi. (Kaydet butonuna basın)";
+    });
+
+    $("clearBrochureBtn")?.addEventListener("click", () => {
+        if (confirm("Tüm menü sayfalarını silmek istediğinize emin misiniz?")) {
+            brochurePages = [];
+            renderBrochures();
+            showToast("Tüm sayfalar temizlendi.");
+        }
+    });
+
+    $("slug")?.addEventListener("input", (e) => {
+        e.target.value = createSlug(e.target.value);
+    });
+
+});
+
+onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+    if (!user) {
+        showLogin();
+        return;
+    }
+
+    try {
+        currentBusinessRef = doc(db, "isletmeler", user.uid);
+        const snap = await getDoc(currentBusinessRef);
+
+        if (snap.exists()) {
+            populateForm(snap.data());
+            if (membershipValid()) {
+                showApp();
+            } else {
+                showExpired();
+            }
+        } else {
+            showToast("İşletme kaydı bulunamadı.", "error");
+            showLogin();
+        }
+    } catch (error) {
+        showToast("Veri çekme hatası: " + error.message, "error");
+    }
+});
+</script>
+
+</body>
+</html>

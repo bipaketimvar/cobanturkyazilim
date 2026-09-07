@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<meta name="theme-color" content="#0d0f14">
+<title>QR Menü</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0f14;
+  --surface: #161922;
+  --surface-glass: rgba(22, 25, 34, 0.75);
+  --border: rgba(255, 255, 255, 0.08);
+  --brand-grad: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+  --brand-shadow: rgba(245, 158, 11, 0.3);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --success: #10b981;
+  --radius: 24px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg);
+  color: var(--text-main);
+  min-height: 100vh;
+  padding-bottom: calc(30px + env(safe-area-inset-bottom));
+}
+
+button, a { font: inherit; text-decoration: none; border: none; outline: none; }
+button { cursor: pointer; }
+.hidden { display: none !important; }
+
+.state-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: radial-gradient(circle at top, #1e2433 0%, var(--bg) 100%);
+}
+.state-card {
+  width: min(380px, 100%);
+  background: var(--surface-glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px 24px;
+  text-align: center;
+}
+.state-icon { font-size: 52px; margin-bottom: 16px; display: block; }
+.state-card h1 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+.state-card p { color: var(--text-muted); font-size: 14px; line-height: 1.5; }
+
+.page { width: min(640px, 100%); margin: 0 auto; }
+
+.hero {
+  position: relative;
+  background: #000;
+  border-radius: 0 0 var(--radius) var(--radius);
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+.hero-cover {
+  width: 100%;
+  height: auto;
+  max-height: 380px;
+  object-fit: contain;
+  display: block;
+}
+.hero-fallback {
+  padding: 48px 20px 36px;
+  text-align: center;
+  background: linear-gradient(180deg, #1f2430 0%, #0d0f14 100%);
+}
+.hero-title {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  background: linear-gradient(to right, #ffffff, #cbd5e1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.trust-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 700;
+  color: #fbbf24;
+}
+.trust-item { display: flex; align-items: center; gap: 4px; }
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--success);
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+}
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
+
+.actions-wrap { padding: 16px 16px 8px; }
+.actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.action-btn {
+  height: 52px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
+}
+.action-btn:active { transform: scale(0.96); }
+.action-btn.primary {
+  background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+  border: none;
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.25);
+}
+.action-btn.call {
+  background: var(--brand-grad);
+  border: none;
+  box-shadow: 0 8px 20px var(--brand-shadow);
+}
+
+.brochure-section { padding: 12px 16px; }
+
+.menu-header-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 15px 0 10px 0;
+}
+.gurme-tag {
+  font-size: 11px;
+  font-weight: 800;
+  color: #f59e0b;
+  letter-spacing: 1px;
+}
+.menu-title-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.menu-title {
+  font-size: 20px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.share-btn {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.brochure-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+.brochure-preview {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  cursor: pointer;
+}
+.brochure-preview img { width: 100%; height: auto; display: block; }
+.preview-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(13, 15, 20, 0.95) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  text-align: center;
+}
+.preview-text { font-size: 14px; font-weight: 800; color: #fff; }
+.preview-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+.btn-cta {
+  width: 100%;
+  margin-top: 12px;
+  height: 56px;
+  border-radius: 18px;
+  background: var(--brand-grad);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 10px 25px var(--brand-shadow);
+}
+.btn-cta:active { transform: scale(0.98); }
+
+.page-dots { display: flex; justify-content: center; gap: 6px; margin-top: 14px; }
+.dot { width: 8px; height: 8px; border-radius: 100px; background: rgba(255, 255, 255, 0.15); transition: all 0.3s; }
+.dot.active { width: 24px; background: #f59e0b; }
+
+.footer { text-align: center; padding: 28px 16px; color: var(--text-muted); }
+.footer-brand { font-size: 12px; font-weight: 800; color: var(--text-main); letter-spacing: 0.5px; }
+
+.viewer {
+  position: fixed;
+  inset: 0;
+  background: #050608;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+}
+.viewer-header {
+  height: 60px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(13, 15, 20, 0.9);
+  backdrop-filter: blur(10px);
+}
+.close-btn {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 800;
+}
+.viewer-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  touch-action: pan-y pinch-zoom;
+}
+.viewer-body img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.viewer-footer {
+  height: 80px;
+  padding-bottom: env(safe-area-inset-bottom);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.nav-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nav-btn:disabled { opacity: 0.2; }
+</style>
+</head>
+<body>
+
+<div id="loading" class="state-container">
+  <div class="state-card">
+    <span class="state-icon">🔥</span>
+    <h1>Menü Yükleniyor</h1>
+    <p>En taze lezzetler hazırlanıyor...</p>
+  </div>
+</div>
+
+<div id="errorState" class="state-container hidden">
+  <div class="state-card">
+    <span class="state-icon">⚠️</span>
+    <h1 id="errorTitle">Menü Bulunamadı</h1>
+    <p id="errorText">Bağlantı adresi geçersiz veya yayından kaldırılmış.</p>
+  </div>
+</div>
+
+<main id="page" class="page hidden">
+  
+  <section class="hero">
+    <img id="heroCover" class="hero-cover hidden" alt="Kapak Görseli">
+    <div id="heroFallback" class="hero-fallback">
+      <div id="fallbackTitle" class="hero-title">Hoş Geldiniz</div>
+    </div>
+  </section>
+
+  <div class="trust-bar">
+    <div class="trust-item">⭐ 4.9 Değerlendirme</div>
+    <div>•</div>
+    <div class="status-badge"><span class="status-dot"></span> Servise Açık</div>
+  </div>
+
+  <div class="actions-wrap">
+    <div id="actions" class="actions"></div>
+  </div>
+
+  <section id="brochureSection" class="brochure-section hidden">
+    <div class="menu-header-section">
+        <div class="gurme-tag">✨ GURME LEZZETLER</div>
+        <div class="menu-title-wrap">
+            <h2 class="menu-title">
+                <span class="icon">🍽️</span> 
+                <span>Lezzet Kataloğu</span>
+            </h2>
+            <button class="share-btn" id="shareBtn">🔗 Paylaş</button>
+        </div>
+    </div>
+
+    <div class="brochure-card">
+      <div id="brochurePreview" class="brochure-preview"></div>
+      <button id="brochureButton" class="btn-cta">
+        🔥 Lezzetleri Keşfet & İncele
+      </button>
+      <div id="pageDots" class="page-dots"></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-brand">ÇOBANTÜRK YAZILIM</div>
+    <div style="font-size: 10px; margin-top: 2px;">Premium QR Menü Deneyimi</div>
+  </footer>
+
+</main>
+
+<div id="viewer" class="viewer hidden">
+  <div class="viewer-header">
+    <button id="closeViewer" class="close-btn">✕ Kapat</button>
+    <span id="viewerTitle" style="font-weight: 800; font-size: 14px; color: #fff;">Menü</span>
+    <div style="width: 60px;"></div>
+  </div>
+
+  <div id="viewerBody" class="viewer-body">
+    <img id="brochureImage" alt="Menü Sayfası">
+  </div>
+
+  <div class="viewer-footer">
+    <button id="prevPage" class="nav-btn">‹</button>
+    <span id="pageCounter" style="font-weight: 800; font-size: 14px;">1 / 1</span>
+    <button id="nextPage" class="nav-btn">›</button>
+  </div>
+</div>
+
+<script type="module">
+import { db, doc, getDoc } from "./firebase.js";
+
+const $ = id => document.getElementById(id);
+let menuData = null, pages = [], pageIndex = 0;
+
+function escapeHtml(v) {
+  return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function formatPhone(v) {
+  let d = String(v||"").replace(/\D/g,"");
+  if(d.startsWith("0")) d = "9" + d;
+  else if(d.startsWith("5") && d.length === 10) d = "90" + d;
+  return d;
+}
+function normalizePages(value) {
+  if (!Array.isArray(value)) return [];
+  return value.map((p, i) => typeof p === "string" 
+    ? { url: p, name: `Sayfa ${i+1}` } 
+    : { url: p?.url || p?.imageUrl || "", name: p?.name || `Sayfa ${i+1}` }
+  ).filter(p => p.url);
+}
+
+function render() {
+  const d = menuData || {};
+
+  const cover = String(d.coverImage || "").trim();
+  if (cover) {
+    $("heroCover").src = cover;
+    $("heroCover").classList.remove("hidden");
+    $("heroFallback").classList.add("hidden");
+  } else {
+    $("fallbackTitle").textContent = d.businessName || d.title || "Hoş Geldiniz";
+  }
+
+  const acts = [];
+  const phone = formatPhone(d.phone);
+  const wa = formatPhone(d.whatsapp);
+
+  if (phone) acts.push(`<a class="action-btn call" href="tel:+${phone}">📞 Ara</a>`);
+  if (wa) acts.push(`<a class="action-btn primary" href="https://wa.me/${wa}" target="_blank">💬 WhatsApp</a>`);
+  if (d.address) acts.push(`<a class="action-btn" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.address)}" target="_blank">📍 Konum</a>`);
+
+  $("actions").innerHTML = acts.join("");
+  if (!acts.length) $("actions").parentElement.classList.add("hidden");
+
+  if (pages.length && d.brochureActive !== false) {
+    $("brochureSection").classList.remove("hidden");
+    $("brochurePreview").innerHTML = `
+      <img src="${escapeHtml(pages[0].url)}" alt="Menü">
+      <div class="preview-overlay">
+        <div class="preview-text">🔍 Tam Ekran Okumak İçin Dokun</div>
+        <div class="preview-sub">${pages.length} Sayfadan Oluşmaktadır</div>
+      </div>
+    `;
+    renderDots();
+  }
+
+  $("loading").classList.add("hidden");
+  $("page").classList.remove("hidden");
+}
+
+function renderDots() {
+  $("pageDots").innerHTML = pages.map((_, i) => `<span class="dot ${i===0?'active':''}"></span>`).join("");
+}
+
+function updateDots() {
+  document.querySelectorAll(".dot").forEach((d, i) => d.classList.toggle("active", i === pageIndex));
+}
+
+function showError(title, text) {
+  $("loading").classList.add("hidden");
+  $("page").classList.add("hidden");
+  $("errorTitle").textContent = title;
+  $("errorText").textContent = text;
+  $("errorState").classList.remove("hidden");
+}
+
+function updateViewer() {
+  if (!pages.length) return;
+  $("brochureImage").src = pages[pageIndex].url;
+  $("viewerTitle").textContent = menuData?.businessName || menuData?.title || "Menü";
+  $("pageCounter").textContent = `${pageIndex + 1} / ${pages.length}`;
+  $("prevPage").disabled = pageIndex === 0;
+  $("nextPage").disabled = pageIndex === pages.length - 1;
+  updateDots();
+}
+
+function openViewer() {
+  if (!pages.length) return;
+  pageIndex = 0;
+  updateViewer();
+  $("viewer").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+}
+
+function closeViewer() {
+  $("viewer").classList.add("hidden");
+  document.body.style.overflow = "";
+}
+
+$("brochureButton").onclick = openViewer;
+$("brochurePreview").onclick = openViewer;
+$("closeViewer").onclick = closeViewer;
+$("prevPage").onclick = () => { if (pageIndex > 0) { pageIndex--; updateViewer(); } };
+$("nextPage").onclick = () => { if (pageIndex < pages.length - 1) { pageIndex++; updateViewer(); } };
+
+$("shareBtn").onclick = async () => {
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: menuData?.businessName || 'Menü',
+        text: 'Harika lezzetlere göz atın!',
+        url: window.location.href
+      });
+    } catch (err) {}
+  } else {
+    navigator.clipboard.writeText(window.location.href);
+    alert("Menü bağlantısı kopyalandı!");
+  }
+};
+
+let touchStartX = 0, touchEndX = 0;
+$("viewerBody").addEventListener("touchstart", e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+$("viewerBody").addEventListener("touchend", e => {
+  touchEndX = e.changedTouches[0].screenX;
+  if (touchEndX < touchStartX - 50 && pageIndex < pages.length - 1) { pageIndex++; updateViewer(); }
+  if (touchEndX > touchStartX + 50 && pageIndex > 0) { pageIndex--; updateViewer(); }
+}, { passive: true });
+
+async function init() {
+  try {
+    const urlParams = new URLSearchParams(location.search);
+    const slug = (urlParams.get("slug") || urlParams.get("menu"))?.trim();
+    if (!slug) {
+      showError("Menü Kodu Eksik", "Lütfen geçerli bir QR kod okutun.");
+      return;
+    }
+    const snap = await getDoc(doc(db, "publicMenus", slug));
+    if (!snap.exists()) {
+      showError("Menü Bulunamadı", "Bu restorana ait yayın bulunamadı.");
+      return;
+    }
+    menuData = snap.data();
+    if (menuData.active === false) {
+      showError("Menü Yayında Değil", "Bu işletmenin QR menüsü şu an aktif değildir.");
+      return;
+    }
+    pages = normalizePages(menuData.brochurePages);
+    render();
+  } catch (e) {
+    console.error(e);
+    showError("Ağ Hatası", "Menüye şu an ulaşılamıyor.");
+  }
+}
+
+init();
+
+</script>
+
+</body>
+</html>
