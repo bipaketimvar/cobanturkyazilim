@@ -1,1 +1,268 @@
+<!DOCTYPE html>
+<html lang="tr">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <title>Çobantürk Yazılım - Müzik</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    #263238 0%,
+                    #111827 45%,
+                    #05070a 100%
+                );
+
+            color: #ffffff;
+        }
+
+        .music-card {
+            width: 100%;
+            max-width: 430px;
+
+            padding: 30px 24px;
+
+            border: 1px solid rgba(255,255,255,.10);
+
+            border-radius: 28px;
+
+            background:
+                rgba(255,255,255,.07);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            box-shadow:
+                0 25px 70px rgba(0,0,0,.45);
+
+            text-align: center;
+        }
+
+        .music-icon {
+            width: 86px;
+            height: 86px;
+
+            margin: 0 auto 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,.10);
+
+            font-size: 38px;
+
+            box-shadow:
+                inset 0 0 0 1px rgba(255,255,255,.08);
+        }
+
+        h1 {
+            font-size: 23px;
+            font-weight: 700;
+
+            letter-spacing: -.3px;
+
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color:
+                rgba(255,255,255,.65);
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            margin-bottom: 24px;
+        }
+
+        audio {
+            width: 100%;
+            display: block;
+        }
+
+        .status {
+            margin-top: 18px;
+
+            font-size: 13px;
+
+            color:
+                rgba(255,255,255,.55);
+
+            transition:
+                color .2s ease;
+        }
+
+        .status.active {
+            color: #ffffff;
+        }
+
+        .footer {
+            margin-top: 25px;
+
+            font-size: 11px;
+
+            color:
+                rgba(255,255,255,.35);
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <main class="music-card">
+
+        <div class="music-icon">
+            🎵
+        </div>
+
+
+        <h1>
+            Fon Müziği
+        </h1>
+
+
+        <p class="description">
+            Çobantürk Yazılım
+        </p>
+
+
+        <!--
+            fon.mp3 dosyası
+            muzik.html ile aynı klasörde olmalıdır.
+        -->
+
+        <audio
+            id="musicPlayer"
+            controls
+            preload="auto"
+            loop
+        >
+
+            <source
+                src="./fon.mp3"
+                type="audio/mpeg"
+            >
+
+            Tarayıcınız ses oynatmayı desteklemiyor.
+
+        </audio>
+
+
+        <div
+            class="status"
+            id="status"
+        >
+            Hazır
+        </div>
+
+
+        <div class="footer">
+            Çobantürk Yazılım
+        </div>
+
+    </main>
+
+
+    <script>
+
+        const player =
+            document.getElementById("musicPlayer");
+
+        const status =
+            document.getElementById("status");
+
+
+        player.addEventListener("play", () => {
+
+            status.textContent =
+                "Müzik çalıyor";
+
+            status.classList.add("active");
+
+        });
+
+
+        player.addEventListener("pause", () => {
+
+            status.textContent =
+                "Müzik duraklatıldı";
+
+            status.classList.remove("active");
+
+        });
+
+
+        player.addEventListener("ended", () => {
+
+            status.textContent =
+                "Müzik tamamlandı";
+
+            status.classList.remove("active");
+
+        });
+
+
+        player.addEventListener("error", () => {
+
+            status.textContent =
+                "Müzik dosyası bulunamadı.";
+
+            status.classList.remove("active");
+
+        });
+
+    </script>
+
+</body>
+
+</html>
