@@ -1,1 +1,198 @@
+<!doctype html>
+<html lang="tr" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BipaketimVar | Samsun VIP & Acil Kurye Hizmeti</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-[#050c08] text-slate-100 font-['Plus_Jakarta_Sans'] antialiased min-h-screen relative overflow-x-hidden">
+
+  <!-- Background Effects -->
+  <div class="fixed -top-40 -left-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-[128px] pointer-events-none"></div>
+  <div class="fixed top-1/3 -right-40 w-96 h-96 bg-emerald-400/10 rounded-full blur-[128px] pointer-events-none"></div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-[#050c08]/90 border-b border-emerald-900/30 px-6 py-4 shadow-sm shadow-emerald-900/10">
+    <div class="max-w-5xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <img src="assets/logo.png" alt="biPaketimVar" class="logo w-8 h-8 object-contain">
+        <span class="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-emerald-400">biPaketimVar</span>
+      </div>
+      <a href="track.html" class="text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1.5 bg-emerald-950/40 border border-emerald-800/40 px-4 py-2 rounded-xl backdrop-blur-sm shadow-inner">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        Gönderi Takip
+      </a>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-12 relative z-10">
+    <!-- Hero Section -->
+    <div class="text-center mb-12 space-y-6">
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 backdrop-blur-md">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        Samsun İçi 7/24 Ekspres VIP Kurye
+      </span>
+      
+      <h1 class="text-4xl sm:text-6xl font-black text-white tracking-tight leading-tight">
+        Acil Gönderilerinizi <br class="hidden sm:block" /> 
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-200">Güvenle Ulaştırın</span>
+      </h1>
+      
+      <p class="text-slate-400 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed">
+        Zamanın sizin için ne kadar değerli olduğunu biliyoruz. Samsun içi <strong class="text-emerald-300 font-semibold">acil evrak, hızlı kargo ve VIP teslimat</strong> ihtiyaçlarınız için dakikalar içinde kurye çağırın. Haritadan konumları seçin, anında fiyat alın.
+      </p>
+
+      <!-- Services Badges -->
+      <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-2">
+        <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/40 border border-slate-700/50 backdrop-blur-sm">
+          <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          <span class="text-sm font-semibold text-slate-200">Acil Evrak</span>
+        </div>
+        <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/40 border border-slate-700/50 backdrop-blur-sm">
+          <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          <span class="text-sm font-semibold text-slate-200">Acil Kargo</span>
+        </div>
+        <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/40 border border-slate-700/50 backdrop-blur-sm">
+          <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          <span class="text-sm font-semibold text-slate-200">Hızlı Teslimat</span>
+        </div>
+        <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/40 border border-slate-700/50 backdrop-blur-sm">
+          <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          <span class="text-sm font-semibold text-slate-200">Güvenli Taşıma</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Form -->
+    <form id="orderForm" class="glass-card rounded-3xl p-6 sm:p-10 border border-emerald-900/30 bg-[#0a1610]/70 backdrop-blur-xl shadow-2xl space-y-8 relative overflow-hidden">
+      
+      <!-- Subtle form background glow -->
+      <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-900/10 rounded-full blur-[80px] pointer-events-none"></div>
+
+      <!-- Sender & Receiver Details -->
+      <div class="relative">
+        <div class="border-b border-emerald-900/40 pb-4 mb-6">
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/></svg>
+            İletişim Bilgileri
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Gönderici Ad Soyad</label>
+            <input id="senderName" required placeholder="Örn: Ahmet Yılmaz" class="custom-input w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all">
+          </div>
+          <div class="space-y-2">
+            <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Gönderici Telefon</label>
+            <input id="senderPhone" required inputmode="tel" placeholder="05XX XXX XX XX" class="custom-input w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all">
+          </div>
+          <div class="space-y-2">
+            <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Alıcı Ad Soyad</label>
+            <input id="receiverName" required placeholder="Örn: Mehmet Kaya" class="custom-input w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all">
+          </div>
+          <div class="space-y-2">
+            <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Alıcı Telefon</label>
+            <input id="receiverPhone" required inputmode="tel" placeholder="05XX XXX XX XX" class="custom-input w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all">
+          </div>
+        </div>
+      </div>
+
+      <!-- Map & Address Selection -->
+      <div class="relative">
+        <div class="border-b border-emerald-900/40 pb-4 pt-4 mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
+          <div>
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+              Harita Üzerinden Konum Seçimi
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Haritaya tıklayarak veya pini sürükleyerek alım ve teslimat noktalarını belirleyin.</p>
+          </div>
+          <button type="button" id="resetMapBtn" class="text-xs font-semibold px-4 py-2 rounded-xl bg-rose-950/40 border border-rose-800/40 text-rose-300 hover:bg-rose-900/60 hover:text-rose-200 transition-all flex items-center gap-1.5 shrink-0">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            Konumları Temizle
+          </button>
+        </div>
+
+        <div id="map" class="w-full h-80 sm:h-96 rounded-2xl border border-emerald-900/50 shadow-inner z-0 mb-6"></div>
+
+        <div class="space-y-5">
+          <div class="bg-slate-900/30 p-4 rounded-2xl border border-slate-800/50">
+            <label class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5 mb-3">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              Alım Adresi (Nereden Alınacak?)
+            </label>
+            <input id="pickupAddressInput" readonly required placeholder="Haritadan ilk noktayı seçiniz..." class="custom-input w-full bg-slate-950/50 border border-slate-700/50 rounded-xl px-4 py-3 text-slate-300 cursor-not-allowed mb-3">
+            <input id="pickupDetail" required placeholder="Bina No, Daire No, Kat veya İlave Tarif..." class="custom-input w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all">
+          </div>
+
+          <div class="bg-slate-900/30 p-4 rounded-2xl border border-slate-800/50">
+            <label class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5 mb-3">
+              <span class="w-2 h-2 rounded-full bg-teal-400"></span>
+              Teslimat Adresi (Nereye Gidecek?)
+            </label>
+            <input id="deliveryAddressInput" readonly required placeholder="Haritadan ikinci noktayı seçiniz..." class="custom-input w-full bg-slate-950/50 border border-slate-700/50 rounded-xl px-4 py-3 text-slate-300 cursor-not-allowed mb-3">
+            <input id="deliveryDetail" required placeholder="Bina No, Daire No, Kat veya İlave Tarif..." class="custom-input w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all">
+          </div>
+        </div>
+      </div>
+
+      <!-- Package Details & Note -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-emerald-900/40">
+        <div class="space-y-2">
+          <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Gönderi Tipi</label>
+          <select id="packageType" class="custom-input w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all appearance-none cursor-pointer">
+            <option value="1">📄 Zarf / Acil Evrak (Standart)</option>
+            <option value="1.2">📦 Küçük Paket (0-2 kg)</option>
+            <option value="1.5">🛍️ Orta Paket (2-5 kg)</option>
+            <option value="2">🧳 Büyük Paket (5+ kg)</option>
+          </select>
+        </div>
+        <div class="space-y-2">
+          <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Kuryeye Özel Not</label>
+          <textarea id="note" placeholder="Örn: Zile basmayın, güvenliğe bırakın..." class="custom-input w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all h-[50px] resize-none"></textarea>
+        </div>
+      </div>
+
+      <!-- Price & Checkout -->
+      <div class="bg-gradient-to-r from-emerald-950/80 to-teal-950/60 border border-emerald-500/30 rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between shadow-xl shadow-emerald-900/20 gap-4">
+        <div>
+          <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest block">Net Teslimat Ücreti</span>
+          <span id="distanceInfo" class="text-sm text-slate-300 mt-1.5 block flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Lütfen haritadan her iki noktayı seçin
+          </span>
+        </div>
+        <strong id="calculatedPrice" class="text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-100">0 TL</strong>
+      </div>
+
+      <div class="space-y-4 pt-2">
+        <button type="submit" id="payBtn" disabled class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-400 text-[#050c08] font-extrabold text-lg sm:text-xl shadow-xl shadow-emerald-500/20 hover:shadow-emerald-500/40 hover:scale-[1.01] transition-all duration-300 disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Siparişi Onayla & Güvenli Öde
+        </button>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-2 text-xs text-slate-400 font-medium">
+          <div class="flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            256-Bit SSL Güvenli Ödeme
+          </div>
+          <span class="hidden sm:block text-slate-600">•</span>
+          <span>Altyapı <strong class="text-slate-300">Shopier</strong> ile sağlanmaktadır.</span>
+        </div>
+      </div>
+    </form>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+            </html>
 
