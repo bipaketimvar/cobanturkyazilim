@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="tr" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BipektimVar | Kurye İş Havuzu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-[#050c08] text-slate-100 font-['Plus_Jakarta_Sans'] antialiased min-h-screen p-4 sm:p-6">
+
+  <div class="max-w-2xl mx-auto space-y-6">
+    <header class="flex justify-between items-center border-b border-emerald-900/40 pb-4">
+      <div class="flex items-center gap-2"><img src="assets/logo.png" class="logo" alt="biPaketimVar"><h1 class="text-xl font-bold text-emerald-400 flex items-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Kurye İş Havuzu
+      </h1></div>
+      <button id="courierLogout" class="hidden text-xs bg-rose-950 border border-rose-800 text-rose-300 px-3 py-1.5 rounded-lg hover:bg-rose-900 transition-colors">Çıkış</button>
+    </header>
+
+    <div id="courierAuth" class="glass-card p-6 rounded-2xl border border-emerald-900/40 max-w-sm mx-auto space-y-4">
+      <h2 class="text-lg font-bold text-center">Kurye Girişi</h2>
+      <form id="courierLoginForm" class="space-y-3">
+        <input id="courierEmail" type="email" placeholder="E-posta" required class="custom-input">
+        <input id="courierPassword" type="password" placeholder="Şifre" required class="custom-input">
+        <button type="submit" class="w-full py-2.5 bg-emerald-400 text-black font-bold rounded-xl text-sm hover:brightness-110 transition-all">Giriş Yap</button>
+      </form>
+    </div>
+
+    <div id="courierJobs" class="hidden space-y-4">
+      <div id="jobsList" class="space-y-3"></div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

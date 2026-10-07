@@ -1,0 +1,10 @@
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#050c08}
+.glass-card{background:rgba(10,22,16,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.custom-input{width:100%;background:rgba(5,12,8,.65);border:1px solid rgba(16,185,129,.2);border-radius:.75rem;padding:.75rem 1rem;color:#f1f5f9;font-size:.875rem;outline:0;transition:.2s}
+.custom-input:focus{border-color:#34d399;box-shadow:0 0 15px rgba(52,211,153,.15)}
+.step{padding:12px;border-radius:12px;border:1px solid rgba(16,185,129,.15);background:rgba(5,12,8,.5);color:#64748b;margin-bottom:8px;transition:.3s}
+.step.active{border-color:#34d399;color:#34d399;font-weight:700;background:rgba(6,78,59,.3)}
+.logo{width:42px;height:42px;object-fit:contain;border-radius:12px;background:#fff}
+.logo-lg{width:90px;height:90px;object-fit:contain;border-radius:20px;background:#fff;padding:4px}
+.status-dot{width:9px;height:9px;border-radius:999px;background:#64748b;display:inline-block}.status-dot.active{background:#34d399;box-shadow:0 0 10px #34d399}
+#trackingMap{height:300px;border-radius:18px;overflow:hidden;border:1px solid rgba(16,185,129,.25)}
